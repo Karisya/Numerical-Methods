@@ -1,21 +1,22 @@
-#include <iostream>;
+#include <iostream>
 #include<algorithm>
 #include<math.h>
 
 using namespace std;
 
-double firstStep(double array[3][3], const int, double[]);
-double secondStep(double array[3][3], const int, double[]);
-double thirdStep(double array[3][3], const int, double[], double[]);
-double vF(double mA[3][3], double* cB, double* X, const int size, double[]);
-double norma(double[], const int);
-double display(double array[3][3], const int, double[]);
-double bGauss(double arr[3][3], const int, double[], double[]);
+const int n = 3;
+double directCourse(double [n][n], const int, double[]);
+double triangularForm(double[n][n], const int, double[]);
+double reverseCourse(double [n][n], const int, double[], double[]);
+double vF(double [n][n], double[], double[], const int size, double []);
+double norma(double*, const int);
+double display(double [n][n], const int, double[]);
+double bGauss(double [n][n], const int, double[], double[]);
 double relativeError(double[], double[], const int);
 
 
 int main() {
-	const int size = 3;
+const int size = 3;
 	double X[size] = { 0 };
 	double newB[size] = { 0 };
 	double newX[size] = { 0 };
@@ -31,33 +32,33 @@ int main() {
 	display(mA, size, cB);
 
 
-	firstStep(mA, size, cB);
+	directCourse(mA, size, cB);
 	cout << "First matrix:" << endl;
 	display(mA, size, cB);
 
 	cout << "Second matrix:" << endl;
 
-	secondStep(mA, size, cB);
+	triangularForm(mA, size, cB);
 	display(mA, size, cB);
 
 	cout << "Solution:" << endl;
-	thirdStep(mA, size, cB, X);
+	reverseCourse(mA, size, cB, X);
 
 	cout << "vector F : " << endl;
 	vF(mA, cB, X, size, vectorF);
 
 	cout << "norma:" << endl;
-	norma(vectorF, size);
+	norma(vF, size);
 
 	bGauss(mA, size, X, newB);
-	firstStep(mA, size, newB);
-	secondStep(mA, size, newB);
-	thirdStep(mA, size, newB, newX);
+	directCourse(mA, size, newB);
+	triangularForm(mA, size, newB);
+	reverseCourse(mA, size, newB, newX);
 	relativeError(X, newX, size);
 
 }
 
-double display(double mA[3][3], const int size, double* cB) {
+double display(double mA[n][n], const int size, double* cB) {
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			cout << mA[i][j] << "\t";
@@ -69,7 +70,7 @@ double display(double mA[3][3], const int size, double* cB) {
 	return 0;
 };
 
-double firstStep(double mA[3][3], const int size, double cB[]) {
+double directCourse(double mA[n][n], const int size, double cB[]) {
 	for (int i = 0; i < size; i++) {
 		int maxIndex = i;
 		double max = mA[i][i];
@@ -97,7 +98,7 @@ double firstStep(double mA[3][3], const int size, double cB[]) {
 	return 0;
 }
 
-double secondStep(double mA[3][3], const int size, double* cB) {
+double triangularForm(double mA[n][n], const int size, double* cB) {
 
 	for (int i = 0; i < size; i++) 
 	{
@@ -110,9 +111,9 @@ double secondStep(double mA[3][3], const int size, double* cB) {
 		for (int j = i + 1; j < size; j++)
 		{
 			double s = mA[j][i];
-			for (int z = i; z < size; z++)
+			for (int k = i; k < size; k++)
 			{
-				mA[j][z] -= s * mA[i][z];
+				mA[j][k] -= s * mA[i][k];
 			}
 			cB[j] -= s * cB[i];
 		}
@@ -120,7 +121,7 @@ double secondStep(double mA[3][3], const int size, double* cB) {
 	return 0;
 }
 
-	double thirdStep(double mA[3][3], const int size, double* cB, double* X) {
+	double reverseCourse(double mA[n][n], const int size, double* cB, double* X) {
 
 		for (int k = size - 1; k >= 0; k--) 
 		{
@@ -137,7 +138,8 @@ double secondStep(double mA[3][3], const int size, double* cB) {
 	
 	return 0;
 }
-double vF(double mA[3][3], double* cB, double* X, const int size, double* vectorF) {
+double vF(double mA[n][n], double* cB, double* X, const int size, double* vectorF) {
+
 
 	for (int i = 0; i < size; i++)
 	{
@@ -148,8 +150,8 @@ double vF(double mA[3][3], double* cB, double* X, const int size, double* vector
 		}
 	}
 
-	cout << *vectorF << endl;
-	return 0;
+
+	return *vectorF;
 }
 
 double norma(double* vF, const int size) {
@@ -161,7 +163,7 @@ double norma(double* vF, const int size) {
 	return 0;
 }
 
-double bGauss(double arr[3][3], const int size, double x[], double g[]) {
+double bGauss(double arr[n][n], const int size, double x[], double g[]) {
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++)
 			g[j] = arr[i][j] * x[j];
@@ -170,7 +172,7 @@ double bGauss(double arr[3][3], const int size, double x[], double g[]) {
 }
 
 double relativeError(double x1[], double x2[], const int size) {
-	double res[3] = { 0 };
+	double res[n] = { 0 };
 	cout << "relative error:" << endl;
 	for (int i = 0; i < size; i++) {
 		res[i] = (x2[i] - x1[i]) / x1[i];
