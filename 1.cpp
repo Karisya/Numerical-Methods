@@ -5,14 +5,14 @@
 using namespace std;
 
 const int n = 3;
-double directCourse(double [n][n], const int, double[]);
-double triangularForm(double[n][n], const int, double[]);
-double reverseCourse(double [n][n], const int, double[], double[]);
-double vF(double [n][n], double[], double[], const int size, double []);
-double norma(double*, const int);
-double display(double [n][n], const int, double[]);
-double bGauss(double [n][n], const int, double[], double[]);
-double relativeError(double[], double[], const int);
+void directCourse(double [n][n], const int, double[]);
+void triangularForm(double[n][n], const int, double[]);
+void reverseCourse(double [n][n], const int, double[], double[]);
+void vF(double [n][n], double[], double[], const int size, double []);
+void norma(double*, const int);
+void display(double [n][n], const int, double[]);
+void bGauss(double [n][n], const int, double[], double[]);
+void relativeError(double[], double[], const int);
 
 
 int main() {
@@ -48,7 +48,7 @@ const int size = 3;
 	vF(mA, cB, X, size, vectorF);
 
 	cout << "norma:" << endl;
-	norma(vF, size);
+	norma(vectorF, size);
 
 	bGauss(mA, size, X, newB);
 	directCourse(mA, size, newB);
@@ -58,7 +58,7 @@ const int size = 3;
 
 }
 
-double display(double mA[n][n], const int size, double* cB) {
+void display(double mA[n][n], const int size, double* cB) {
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			cout << mA[i][j] << "\t";
@@ -67,10 +67,9 @@ double display(double mA[n][n], const int size, double* cB) {
 		cout << "\n";
 	}
 	cout << endl;
-	return 0;
 };
 
-double directCourse(double mA[n][n], const int size, double cB[]) {
+void directCourse(double mA[n][n], const int size, double cB[]) {
 	for (int i = 0; i < size; i++) {
 		int maxIndex = i;
 		double max = mA[i][i];
@@ -95,10 +94,9 @@ double directCourse(double mA[n][n], const int size, double cB[]) {
 		}
 	}
 
-	return 0;
 }
 
-double triangularForm(double mA[n][n], const int size, double* cB) {
+void triangularForm(double mA[n][n], const int size, double* cB) {
 
 	for (int i = 0; i < size; i++) 
 	{
@@ -118,10 +116,9 @@ double triangularForm(double mA[n][n], const int size, double* cB) {
 			cB[j] -= s * cB[i];
 		}
 	}
-	return 0;
 }
 
-	double reverseCourse(double mA[n][n], const int size, double* cB, double* X) {
+	void reverseCourse(double mA[n][n], const int size, double* cB, double* X) {
 
 		for (int k = size - 1; k >= 0; k--) 
 		{
@@ -136,9 +133,8 @@ double triangularForm(double mA[n][n], const int size, double* cB) {
 		}
 		cout << endl;
 	
-	return 0;
 }
-double vF(double mA[n][n], double* cB, double* X, const int size, double* vectorF) {
+void vF(double mA[n][n], double* cB, double* X, const int size, double* vectorF) {
 
 
 	for (int i = 0; i < size; i++)
@@ -148,30 +144,27 @@ double vF(double mA[n][n], double* cB, double* X, const int size, double* vector
 		{
 			vectorF[i] += mA[i][j] * X[j];
 		}
+	cout << vectorF[i] << "\t";
 	}
-
-
-	return *vectorF;
+	cout << endl;
 }
 
-double norma(double* vF, const int size) {
+void norma(double* vF, const int size) {
 	double n = abs(vF[0]);
 	for (int i = 0; i < size; i++) {
 		n = max(vF[i], n);
 	}
 	cout << n;
-	return 0;
 }
 
-double bGauss(double arr[n][n], const int size, double x[], double g[]) {
+void bGauss(double arr[n][n], const int size, double x[], double g[]) {
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++)
 			g[j] = arr[i][j] * x[j];
 	}
-	return 0;
 }
 
-double relativeError(double x1[], double x2[], const int size) {
+void relativeError(double x1[], double x2[], const int size) {
 	double res[n] = { 0 };
 	cout << "relative error:" << endl;
 	for (int i = 0; i < size; i++) {
@@ -179,5 +172,4 @@ double relativeError(double x1[], double x2[], const int size) {
 		cout << res[i] << ' ';
 	}
 
-	return 0;
 }
