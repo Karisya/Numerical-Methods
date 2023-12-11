@@ -57,15 +57,17 @@ void trapezoidFormula(double e) {
 	I = (I + func(a) + func(b)) * h / 2;
 
 	while (abs(I - I2) > 3 * e) {
+		n *= 2;
+		h = (b - a) / n;
 		I2 = I;
 		I = func(a) + func(b);
 		x = a;
 		for (int i = 0; i < n - 1; i++)
 		{
-			x += r * h;
+			x += h;
 			I += 2 * func(x);
 		}
-		I = (I + func(a) + func(b)) * ((r * h) / 2);
+		I = (I + func(a) + func(b)) * h / 2;
 	}
 
 	R =(-1)*(I2 - I) / (pow(r, p) - 1);
@@ -79,30 +81,34 @@ void SimpsonsFormula(double e) {
 	double h = (b - a) / n, I = 0, I2 = 0, x = a, R;
 	for (int i = 0; i < n - 1; i += 2)
 	{
+
 		x += h;
-		i % 2 ? I += 2 * func(x) : I += 4 * func(x);
+		I += 4 * func(x);
+		x += h;
+		I += 2 * func(x);
 	}
 	I = (I + func(a) + func(b)) * (h / 3);
 
-	n *= 2;
 	while (abs(I - I2) > 15 * e)
 	{
+		n *= 2;
 		h = (b - a) / n;
 		I2 = I;
 		I = func(a) + func(b);
 		x = a;
 		for (int i = 0; i < n - 1; i += 2)
 		{
-			x += r*h;
-			i % 2 ? I += 2 * func(x) : I += 4 * func(x);
+			x += h;
+			I += 4 * func(x);
+			x += h;
+			I += 2 * func(x);
 		}
 		I *= h / 3;
 	};
 
-	R = (-1)*(I2 - I) / (pow(0.5, 4) - 1);
+	R = (I2 - I) / (pow(0.5, 4) - 1);
 	cout << I << endl;
 	cout << "calculation error: " << R << endl;
-
 }
 
 void SimpsonsCubatureFormula(double e)
