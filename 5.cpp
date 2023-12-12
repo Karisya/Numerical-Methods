@@ -13,8 +13,8 @@ double func(double x) {
 double func2(int i, int j)
 {
 	double a = 0, b = 4, c = 1, d = 2;
-	double hx = abs(c - a) / (2 * n), hy = abs(d - b) / (2 * n);
-	double x = a + i * hx, y = c + j * hy;
+	double hx = (b-a) / (2 * n), hy = (d - c) / (2 * n);
+	double x = a  + i * hx, y = c + j * hy;
 	double F = pow(x, 2) / (1 + pow(y, 2));
 	if (x > b && y > d)
 		return 0;
@@ -106,7 +106,7 @@ void SimpsonsFormula(double e) {
 		I *= h / 3;
 	};
 
-	R = (I2 - I) / (pow(0.5, 4) - 1);
+	R = (-1)*(I2 - I) / (pow(0.5, 4) - 1);
 	cout << I << endl;
 	cout << "calculation error: " << R << endl;
 }
@@ -132,6 +132,10 @@ void SimpsonsCubatureFormula(double e)
 		I2 = I;
 	do 
 	{
+		n *= 2;
+		m *= 2;
+		hx = (b - a) / 2 * n;
+		hy = (d - c) / 2 * m;
 		for (int i = 0; i < n - 1; i++)
 		{
 			for (int j = 0; j < m - 1; j++)
